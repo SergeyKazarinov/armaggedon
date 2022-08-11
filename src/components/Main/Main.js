@@ -1,6 +1,7 @@
 import React from "react";
 import main from './Main.module.css';
 import app from '../../App.module.css';
+import Asteroids from "../Asteroids/Asteroids";
 
 function Main() {
   return(
@@ -22,13 +23,25 @@ function Main() {
               </div>
             </p>
             <div className={main.checkbox_container}>
-              <button className={main.checkbox} type="checkbox" id="dangerous" />
+              <input type="checkbox" className={main.checkbox} id="dangerous" />
               <label className={main.checkbox__description} for="dangerous">Показать только опасные</label>
             </div>
           </div>
         </div>
       </section>
 
+      <section className={main.asteroids}>
+        <ul className={main.list}>
+          <Asteroids />
+          <Asteroids />
+          <Asteroids />
+          <Asteroids />
+          <Asteroids />
+          <Asteroids />
+
+        </ul>
+
+      </section>
     </div>
   )
 }
