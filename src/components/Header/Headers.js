@@ -1,9 +1,8 @@
 import React from "react";
 import header from './Header.module.css';
 import app from '../../App.module.css'
-import headerImage from '../../images/headerBackground.jpg'
 
-function Header() {
+function Header({image}) {
   return(
     <header className={header.header}>
       <div className={header.flex_container}>
@@ -18,7 +17,7 @@ function Header() {
           </ul>
         </nav>
       </div>
-      <img className={header.image} src={headerImage} alr="Картинка дня" />
+      <img className={header.image} src={image} alr="Картинка дня" />
     </header>
   )
 }
