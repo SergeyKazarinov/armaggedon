@@ -1,0 +1,55 @@
+.content {
+  box-sizing: border-box;
+  border: 1px solid black;
+  height: 100vh;
+  margin: 24px 30px 0;
+}
+
+.title {
+  margin: 0;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 27.6px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #d7d7d7;
+}
+
+.distance {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+.button {
+  border: none;
+  background-color: #fff;
+  text-decoration: underline;
+}
+
+.active {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.subtitle {
+  padding-top: 8px;
+}
+
+.checkbox_container {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  background: none;
+  border: 1px solid #000;
+  margin-right: 10px;
+}
+
+.checkbox__description {
+  font-size: 16px;
+  line-height: 20px;
+}
