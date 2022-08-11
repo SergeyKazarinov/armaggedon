@@ -70,10 +70,14 @@
   grid-template-columns: repeat(3, 1fr);
 }
 
-@media screen and (max-width: 745px) {
+@media screen and (max-width: 790px) {
   .subtitle {
     flex-direction: column;
     gap: 10px;
+  }
+
+  .list {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -81,7 +85,12 @@
   .content {
     margin: 24px 16px 0;
   }
+
   .distance {
     flex-direction: column;
+  }
+
+  .list {
+    grid-template-columns: repeat(1, 1fr);
   }
 }
