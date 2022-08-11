@@ -1,0 +1,17 @@
+.app {
+  max-width: 1000px;
+  min-width: 320px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto;
+  font-family: "Helvetica", sans-serif;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex_column {
+  flex-direction: column;
+}
