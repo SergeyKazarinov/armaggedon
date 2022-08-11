@@ -19,10 +19,12 @@
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
+  display: flex;
 }
 
 .button {
   border: none;
+  padding: 0;
   background-color: #fff;
   text-decoration: underline;
 }
@@ -33,6 +35,8 @@
 }
 
 .subtitle {
+  display: flex;
+  justify-content: space-between;
   padding-top: 8px;
 }
 
@@ -52,4 +56,20 @@
 .checkbox__description {
   font-size: 16px;
   line-height: 20px;
+}
+
+@media screen and (max-width: 745px) {
+  .subtitle {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .content {
+    margin: 24px 16px 0;
+  }
+  .distance {
+    flex-direction: column;
+  }
 }

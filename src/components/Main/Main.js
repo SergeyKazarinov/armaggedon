@@ -8,16 +8,18 @@ function Main() {
       <section className={main.flights}>
         <div className={`${app.flex} ${app.flex_column}`}>
           <h2 className={main.title}>Ближайшие подлёты</h2>
-          <div className={`${app.flex} ${main.subtitle}`}>
+          <div className={main.subtitle}>
             <p className={main.distance}>
               Отображать расстояние: 
-              <button className={`${main.button} ${main.active}`}>
-                в километрах
-              </button> 
-              |
-              <button className={main.button}>
-                в лунных орбитах
-              </button>
+              <div>
+                <button className={`${main.button} ${main.active}`}>
+                  в километрах
+                </button> 
+                &#8194;|&#8194;
+                <button className={main.button}>
+                  в лунных орбитах
+                </button>
+              </div>
             </p>
             <div className={main.checkbox_container}>
               <button className={main.checkbox} type="checkbox" id="dangerous" />
