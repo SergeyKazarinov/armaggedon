@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import app from './App.module.css';
-import Header from './components/Header/Headers';
-import Main from './components/Main/Main';
-import Footer from './components/Footer/Footer';
-import api from './utils/Api';
+import Header from '../Header/Headers';
+import Main from '../Main/Main';
+import Footer from '../Footer/Footer';
+import api from '../../utils/Api';
+import AsteroidDescriptionPopup from '../AsteroidDescriptionPopup/AsteroidDescriptionPopup';
 
 function App() {
   const date = new Date();
@@ -12,6 +13,9 @@ function App() {
   const [asteroids, setAsteroids] = useState([]);
   const [isAsteroidPage, setIsAsteroidPage] = useState(true);
   const [fetching, setFetching] = useState(false);
+  const [isOpen, setIsOpen] = useState (false);
+  const [selectAsteroid, setSelectAsteroid] = useState({})
+  const [isLoader, setIsLoader] = useState(false);
 
   useEffect(() => {
     api.getApodImage()
@@ -29,6 +33,8 @@ function App() {
           arr = arr.concat(res.near_earth_objects[key]);
         }
         setAsteroids(arr)
+        setSelectAsteroid(arr[0])
+        setIsLoader(true);
       })
       .catch((err) => {
         console.log(err);
@@ -75,11 +81,27 @@ function App() {
     setIsAsteroidPage(boolean)
   }
 
+  function handleEscClose(e) {
+    e.key === "Escape" && closePopup();
+  }
+
+  function handleOpenPopup(data) {
+    setIsOpen(true);
+    setSelectAsteroid(data);
+    window.addEventListener('keydown', handleEscClose);
+  }
+
+  function closePopup() {
+    setIsOpen(false);
+    window.removeEventListener('keydown', handleEscClose);
+  }
+
   return (
     <div className={app.app}>
       <Header image={headerImage} isAsteroidPage={isAsteroidPage} onButtonClick={handleHeaderButtonClick}/>
-      <Main asteroids={asteroids} isAsteroidPage={isAsteroidPage} />
+      <Main asteroids={asteroids} isAsteroidPage={isAsteroidPage} openPopup={handleOpenPopup}/>
       <Footer date={date}/>
+      {isLoader && <AsteroidDescriptionPopup data={selectAsteroid} isOpen={isOpen} onClose={closePopup}/>}
     </div>
   );
 }
