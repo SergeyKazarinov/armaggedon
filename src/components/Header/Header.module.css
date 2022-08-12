@@ -39,6 +39,11 @@
   cursor: pointer;
   color: #fff;
   text-decoration: underline;
+  transition: 0.5s;
+}
+
+.button:hover {
+  opacity: 0.8;
 }
 
 .image {

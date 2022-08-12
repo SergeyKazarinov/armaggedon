@@ -3,10 +3,24 @@ import main from './Main.module.css';
 import app from '../../App.module.css';
 import Asteroids from "../Asteroids/Asteroids";
 
-function Main({asteroids}) {
+function Main({asteroids, isAsteroidPage}) {
   const [isDistanceKilometers, setIsDistanceKilometers] = useState(true);
   const [isPotentiallyHazardous, setIsPotentiallyHazardous] = useState(false)
   const [arrAsteroid, setArrAsteroid] = useState(asteroids);
+  const [asteroidDestroy, setAsteroidDestroy] = useState([]);
+  const [arrAsteroidDestroy, setArrAsteroidDestroy] = useState(asteroidDestroy)
+
+  useEffect(() => {
+    if(isPotentiallyHazardous) {
+      setArrAsteroid(asteroids.filter((item) => (item.is_potentially_hazardous_asteroid === true)))
+      setArrAsteroidDestroy(asteroidDestroy.filter((item) => (item.is_potentially_hazardous_asteroid === true)))
+    }
+    else {
+      setArrAsteroid(asteroids)
+      setArrAsteroidDestroy(asteroidDestroy)
+    }
+    
+  }, [isPotentiallyHazardous, asteroids, asteroidDestroy])
 
   function handleDistanceKilometersClick() {
     setIsDistanceKilometers(true);
@@ -20,21 +34,21 @@ function Main({asteroids}) {
     setIsPotentiallyHazardous(!isPotentiallyHazardous);
   }
 
-  useEffect(() => {
-    if(isPotentiallyHazardous) {
-      setArrAsteroid(asteroids.filter((item) => (item.is_potentially_hazardous_asteroid === true)))
-    }
-    else {
-      setArrAsteroid(asteroids)
-    }
-    
-  }, [isPotentiallyHazardous, asteroids])
+  function handleAddAsteroidDestroy(asteroid) {
+    setAsteroidDestroy([asteroid, ...asteroidDestroy])
+  }
+
+  function handleRemoveAsteroidDestroy(asteroid) {
+    setAsteroidDestroy((asteroidDestroy) => {
+      return asteroidDestroy.filter(item => item !== asteroid);
+    })
+  }
 
   return(
     <div className={main.content}>
       <section className={main.flights}>
         <div className={`${app.flex} ${app.flex_column}`}>
-          <h2 className={main.title}>Ближайшие подлёты</h2>
+          <h2 className={main.title}>{isAsteroidPage ? "Ближайшие подлёты" : "Ваш заказ"}</h2>
           <div className={main.subtitle}>
             <div className={main.distance}>
               Отображать расстояние:&#8194;
@@ -58,15 +72,31 @@ function Main({asteroids}) {
 
       <section className={main.asteroids}>
         <ul className={main.list}>
-          {arrAsteroid.map((item) => (
-            <Asteroids 
-            key={item.id}
-            date={item}
-            isDistanceKilometers={isDistanceKilometers}
-            />)
-          )}
+          {isAsteroidPage 
+          ? (arrAsteroid.map((item) => (
+              <Asteroids 
+              key={item.id}
+              data={item}
+              isDistanceKilometers={isDistanceKilometers}
+              onAddClick={handleAddAsteroidDestroy}
+              onRemoveClick={handleRemoveAsteroidDestroy}
+              />)
+              ))
+          : (arrAsteroidDestroy.map((item) => (
+              <Asteroids 
+              key={item.id}
+              data={item}
+              isDistanceKilometers={isDistanceKilometers}
+              onAddClick={handleAddAsteroidDestroy}
+              onRemoveClick={handleRemoveAsteroidDestroy}
+              />)
+            ))
+          }
         </ul>
-
+        
+        {!isAsteroidPage && (
+          <button type="button" className={main.button_submit}>Отправить заказ</button>
+        )}
       </section>
     </div>
   )
