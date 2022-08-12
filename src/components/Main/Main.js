@@ -65,14 +65,6 @@ function Main({asteroids}) {
             isDistanceKilometers={isDistanceKilometers}
             />)
           )}
-
-          {/* <Asteroids />
-          <Asteroids />
-          <Asteroids />
-          <Asteroids />
-          <Asteroids />
-          <Asteroids /> */}
-
         </ul>
 
       </section>
