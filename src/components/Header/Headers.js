@@ -2,7 +2,15 @@ import React from "react";
 import header from './Header.module.css';
 import app from '../../App.module.css'
 
-function Header({image}) {
+function Header({image, isAsteroidPage, onButtonClick}) {
+  function handleButtonAsteroidClick() {
+    onButtonClick(true);
+  }
+
+  function handleButtonOrderClick() {
+    onButtonClick(false);
+  }
+
   return(
     <header className={header.header}>
       <div className={header.flex_container}>
@@ -12,8 +20,8 @@ function Header({image}) {
         </div>
         <nav className={app.flex}>
           <ul className={`${app.flex} ${header.nav}`}>
-            <li className={`${header.item}`}>Астероиды</li>
-            <li className={`${header.item}`}>Заказ</li>
+            <li><button type="button" className={`${header.button} ${isAsteroidPage && header.active}`} onClick={handleButtonAsteroidClick}>Астероиды</button></li>
+            <li><button type="button" className={`${header.button} ${!isAsteroidPage && header.active}`} onClick={handleButtonOrderClick}>Заказ</button></li>
           </ul>
         </nav>
       </div>

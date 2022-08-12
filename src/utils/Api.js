@@ -1,13 +1,15 @@
 class Api {
   #options
-  #APODUrl //Astronomy Picture of the Day
+  #ApodUrl //Astronomy Picture of the Day
+  #NeowsUrl //Near Earth Object Web Service
   #headers
-  #api_key
+  #apiKey
   constructor(options) {
     this.#options = options;
-    this.#APODUrl = this.#options.APODUrl;
+    this.#ApodUrl = this.#options.ApodUrl;
+    this.#NeowsUrl = this.#options.NeowsUrl;
     this.#headers = this.#options.headers;
-    this.#api_key = this.#options.api_key;
+    this.#apiKey = this.#options.apiKey;
   }
   
   #checkAnswer(res) {
@@ -19,21 +21,31 @@ class Api {
   }
 
   getApodImage() {
-    return fetch(`${this.#APODUrl}?api_key=${this.#api_key}`, {
+    return fetch(`${this.#ApodUrl}?api_key=${this.#apiKey}`, {
       headers: this.#headers
     })
     .then((res) => {
       return this.#checkAnswer(res);
     })
   }
+
+  getInitialAsteroids(date) {
+    return fetch(`${this.#NeowsUrl}?start_date=${date.toISOString().split('T')[0]}&end_date=${date.toISOString().split('T')[0]}&api_key=${this.#apiKey}`, {
+      headers: this.#headers
+    })
+      .then((res) => {
+        return this.#checkAnswer(res);
+      })
+  }
 }
 
 const api = new Api ({
-  APODUrl: 'https://api.nasa.gov/planetary/apod',
+  ApodUrl: 'https://api.nasa.gov/planetary/apod',
+  NeowsUrl: 'http://www.neowsapp.com/rest/v1/feed',
   headers: {
     'Content-Type': 'application/json'
   }, 
-  api_key: 'r6G8CKnPzzOQbhFRHSaaa9WKHSJb3m6NF9wnJn4t'
+  apiKey: 'r6G8CKnPzzOQbhFRHSaaa9WKHSJb3m6NF9wnJn4t'
 });
 
 export default api;
