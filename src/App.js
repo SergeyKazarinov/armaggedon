@@ -52,6 +52,7 @@ function App() {
         }
         setAsteroids(arr)
         setCurrentPage(preState => preState + 1);
+        
       })
       .catch((err) => {
         console.log(err);
@@ -64,7 +65,7 @@ function App() {
   }, [fetching])
 
   function handleScroll(e) {
-    if(e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 100) {
+    if((e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 100) && isAsteroidPage) {
       setFetching(true);
     }
     
@@ -73,10 +74,11 @@ function App() {
   function handleHeaderButtonClick(boolean) {
     setIsAsteroidPage(boolean)
   }
+
   return (
     <div className={app.app}>
       <Header image={headerImage} isAsteroidPage={isAsteroidPage} onButtonClick={handleHeaderButtonClick}/>
-      <Main asteroids={asteroids} />
+      <Main asteroids={asteroids} isAsteroidPage={isAsteroidPage} />
       <Footer date={date}/>
     </div>
   );
