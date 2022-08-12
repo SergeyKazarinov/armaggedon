@@ -1,11 +1,10 @@
 import React from "react";
 import footer from "./Footer.module.css"
 
-function Footer() {
-  const date = new Date().getFullYear();
+function Footer({date}) {
   return(
     <footer className={footer.footer}>
-      <p className={footer.copyright}>{date} &#169; Все права и планеты защищены</p>
+      <p className={footer.copyright}>{date.getFullYear()} &#169; Все права и планеты защищены</p>
     </footer>
   )
 }

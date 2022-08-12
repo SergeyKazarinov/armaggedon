@@ -32,6 +32,15 @@
   gap: 24px;
 }
 
+.button {
+  border: none;
+  padding: 0;
+  background-color: rgba(255, 255, 255, 0);
+  cursor: pointer;
+  color: #fff;
+  text-decoration: underline;
+}
+
 .image {
   position: absolute;
   top: 0;
@@ -39,10 +48,6 @@
   width: 100%;
   object-fit: cover;
   z-index: -1;
-}
-
-.item {
-  text-decoration: underline;
 }
 
 .active {
