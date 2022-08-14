@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from "react";
 import main from './Main.module.css';
-import app from '../../App.module.css';
+import app from '../App/App.module.css';
 import Asteroids from "../Asteroids/Asteroids";
 
-function Main({asteroids, isAsteroidPage}) {
+function Main({asteroids, isAsteroidPage, openPopup}) {
   const [isDistanceKilometers, setIsDistanceKilometers] = useState(true);
   const [isPotentiallyHazardous, setIsPotentiallyHazardous] = useState(false)
   const [arrAsteroid, setArrAsteroid] = useState(asteroids);
@@ -44,6 +44,10 @@ function Main({asteroids, isAsteroidPage}) {
     })
   }
 
+  function handleOpenPopup(data) {
+    openPopup(data);
+  }
+
   return(
     <div className={main.content}>
       <section className={main.flights}>
@@ -80,6 +84,7 @@ function Main({asteroids, isAsteroidPage}) {
               isDistanceKilometers={isDistanceKilometers}
               onAddClick={handleAddAsteroidDestroy}
               onRemoveClick={handleRemoveAsteroidDestroy}
+              onOpenPopup={handleOpenPopup}
               />)
               ))
           : (arrAsteroidDestroy.map((item) => (
@@ -89,6 +94,7 @@ function Main({asteroids, isAsteroidPage}) {
               isDistanceKilometers={isDistanceKilometers}
               onAddClick={handleAddAsteroidDestroy}
               onRemoveClick={handleRemoveAsteroidDestroy}
+              onOpenPopup={handleOpenPopup}
               />)
             ))
           }

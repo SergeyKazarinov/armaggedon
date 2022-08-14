@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import asteroids from './Asteroids.module.css';
-import app from '../../App.module.css';
+import app from '../App/App.module.css';
 import dangerousImage from '../../images/potentially_hazardous_asteroid.png'
 import indangerousImage from '../../images/potentially_inhazardous_asteroid.png'
 
-function Asteroids({ data, isDistanceKilometers, onAddClick, onRemoveClick}) {
+function Asteroids({ data, isDistanceKilometers, onAddClick, onRemoveClick, onOpenPopup}) {
   const yearDataAsteroid = data.close_approach_data[0].close_approach_date.slice(0, 4);
   const monthDataAsteroid = data.close_approach_data[0].close_approach_date.slice(5, 7);
   const dayDataAsteroid = data.close_approach_data[0].close_approach_date.slice(8);
@@ -62,11 +62,15 @@ function Asteroids({ data, isDistanceKilometers, onAddClick, onRemoveClick}) {
     setIsAddOrder(!isAddOrder);
   }
 
+  function handleAsteroidClick() {
+    onOpenPopup(data);
+  }
+
 
   return(
     <li className={`${app.flex} ${app.flex_column} ${asteroids.item}`}>
         <h3 className={asteroids.date}>{dayDataAsteroid} {monthNameDataAsteroid} {yearDataAsteroid}</h3>
-        <div className={`${app.flex} ${asteroids.data}`}>
+        <button type="button" className={`${app.flex} ${asteroids.data}`} onClick={handleAsteroidClick}>
           <img className={`${asteroids.image}`} src={isPotentiallyHazardousAsteroid ? dangerousImage : indangerousImage} alt={isPotentiallyHazardousAsteroid ? "Опасный астероид" : "Не опасный астероид"}/>
           <div className={`${app.flex} ${app.flex_column} ${asteroids.description}`}>
             <h4 className={`${asteroids.description} ${asteroids.title}`}>Астероид {asteroidName}</h4>
@@ -78,7 +82,7 @@ function Asteroids({ data, isDistanceKilometers, onAddClick, onRemoveClick}) {
             </span>
             <span className={asteroids.status}>{isPotentiallyHazardousAsteroid ? "Опасен" : "Не опасен"}</span>
           </div>
-        </div>
+        </button>
         <button type="button" className={asteroids.button} onClick={handleClick}>{!isAddOrder ? "УНИЧТОЖИТЬ" : "НЕ УНИЧТОЖАТЬ"}</button>
     </li>
   )

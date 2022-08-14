@@ -1,6 +1,6 @@
 import React from "react";
 import header from './Header.module.css';
-import app from '../../App.module.css'
+import app from '../App/App.module.css'
 
 function Header({image, isAsteroidPage, onButtonClick}) {
   function handleButtonAsteroidClick() {
