@@ -1,15 +1,9 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import header from './Header.module.css';
-import app from '../App/App.module.css'
+import app from '../App/App.module.css';
 
-function Header({image, isAsteroidPage, onButtonClick}) {
-  function handleButtonAsteroidClick() {
-    onButtonClick(true);
-  }
-
-  function handleButtonOrderClick() {
-    onButtonClick(false);
-  }
+function Header({image, onClickAsteroidPage, onClickOrderPage}) {
 
   return(
     <header className={header.header}>
@@ -18,11 +12,9 @@ function Header({image, isAsteroidPage, onButtonClick}) {
           <h1 className={header.title}>ARMAGGEDON V2</h1>
           <p className={header.subtitle}>Сервис заказа уничтожения астероидов, опасно подлетающих к Земле.</p>
         </div>
-        <nav className={app.flex}>
-          <ul className={`${app.flex} ${header.nav}`}>
-            <li><button type="button" className={`${header.button} ${isAsteroidPage && header.active}`} onClick={handleButtonAsteroidClick}>Астероиды</button></li>
-            <li><button type="button" className={`${header.button} ${!isAsteroidPage && header.active}`} onClick={handleButtonOrderClick}>Заказ</button></li>
-          </ul>
+        <nav className={`${app.flex} ${header.nav}`}>
+          <NavLink exact to="/" activeClassName={header.active} className={header.button} onClick={onClickAsteroidPage}>Астероиды</NavLink>
+          <NavLink to="/order" activeClassName={header.active} className={header.button} onClick={onClickOrderPage}>Заказ</NavLink>
         </nav>
       </div>
       <img className={header.image} src={image} alr="Картинка дня" />

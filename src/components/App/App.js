@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import app from './App.module.css';
 import Header from '../Header/Headers';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 import api from '../../utils/Api';
 import AsteroidDescriptionPopup from '../AsteroidDescriptionPopup/AsteroidDescriptionPopup';
+import AsteroidList from '../AsteroidList/AsteroidList';
+import Order from '../Order/Order'
+
 
 function App() {
   const date = new Date();
   const [currentPage, setCurrentPage] = useState(1)
   const [headerImage, setHeaderImage] = useState('');
   const [asteroids, setAsteroids] = useState([]);
-  const [isAsteroidPage, setIsAsteroidPage] = useState(true);
+  const [currentAsteroid, setCurrentAsteroid] = useState(asteroids);
   const [fetching, setFetching] = useState(false);
   const [isOpen, setIsOpen] = useState (false);
   const [selectAsteroid, setSelectAsteroid] = useState({})
   const [isLoader, setIsLoader] = useState(false);
+  const [isDistanceKilometers, setIsDistanceKilometers] = useState(true);
+  const [isPotentiallyHazardous, setIsPotentiallyHazardous] = useState(false);
+  const [order, setOrder] = useState([]);
+  const [currentOrder, setCurrentOrder] = useState(order);
+  const [isPageAsteroid, setIsPageAsteroid] = useState(true)
 
   useEffect(() => {
     api.getApodImage()
@@ -70,15 +79,23 @@ function App() {
 
   }, [fetching])
 
+  useEffect(() => {
+    if(isPotentiallyHazardous) {
+      setCurrentAsteroid(asteroids.filter((item) => (item.is_potentially_hazardous_asteroid === true)))
+      setCurrentOrder(order.filter((item) => (item.is_potentially_hazardous_asteroid === true)))
+    }
+    else {
+      setCurrentAsteroid(asteroids)
+      setCurrentOrder(order)
+    }
+    
+  }, [isPotentiallyHazardous, asteroids, order])
+
   function handleScroll(e) {
-    if((e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 100) && isAsteroidPage) {
+    if((e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 100) && isPageAsteroid) {
       setFetching(true);
     }
     
-  }
-
-  function handleHeaderButtonClick(boolean) {
-    setIsAsteroidPage(boolean)
   }
 
   function handleEscClose(e) {
@@ -96,13 +113,83 @@ function App() {
     window.removeEventListener('keydown', handleEscClose);
   }
 
+  function handleDistanceKilometersClick() {
+    setIsDistanceKilometers(true);
+  }
+
+  function handleDistanceLunarClick() {
+    setIsDistanceKilometers(false);
+  }
+
+  function handleDangerousClick(isChecked) {
+    setIsPotentiallyHazardous(isChecked);
+  }
+
+  function handleAddAsteroidDestroy(asteroid) {
+    setOrder([asteroid, ...order])
+  }
+
+  function handleRemoveAsteroidDestroy(asteroid) {
+    setOrder((order) => {
+      return order.filter(item => item !== asteroid);
+    })
+  }
+
+  function handleClickAsteroidPage() {
+    setIsPageAsteroid(true);
+    console.log(`isPageAsteroid ${isPageAsteroid}`)
+  }
+
+  function handleClickOrderPage() {
+    setIsPageAsteroid(false);
+    console.log(`isPageAsteroid ${isPageAsteroid}`)
+  }
+
   return (
-    <div className={app.app}>
-      <Header image={headerImage} isAsteroidPage={isAsteroidPage} onButtonClick={handleHeaderButtonClick}/>
-      <Main asteroids={asteroids} isAsteroidPage={isAsteroidPage} openPopup={handleOpenPopup}/>
-      <Footer date={date}/>
-      {isLoader && <AsteroidDescriptionPopup data={selectAsteroid} isOpen={isOpen} onClose={closePopup}/>}
-    </div>
+    <BrowserRouter>
+      <div className={app.app}>
+        <Header image={headerImage} onClickAsteroidPage={handleClickAsteroidPage} onClickOrderPage={handleClickOrderPage} />
+        <div className={app.content}>
+          <Main
+            distanceKilometers={handleDistanceKilometersClick}
+            distanceLunar={handleDistanceLunarClick}
+            onFilterClick={handleDangerousClick}
+          />
+          <Switch>
+            <Route exact path="/">
+              <AsteroidList
+                dataList={currentAsteroid}
+                orderList={order}
+                openPopup={handleOpenPopup}
+                isDistanceKilometers={isDistanceKilometers}
+                onAddClick={handleAddAsteroidDestroy}
+                onRemoveClick={handleRemoveAsteroidDestroy}
+                isPageAsteroid={isPageAsteroid}
+              />
+            </Route>
+            <Route path="/order">
+              <h2 className={app.title}>Ваш заказ</h2>
+              {order.length === 0 
+              ? (<>
+                  <p className={app.order}>Ваша корзина пуста, команда им. Брюса Уиллиса не знает, куда лететь.</p>
+                  <p className={app.order}>Добавьте астероиды в корзину</p>
+                </>)
+              : <Order
+                dataList={currentOrder}
+                openPopup={handleOpenPopup}
+                isDistanceKilometers={isDistanceKilometers}
+                onAddClick={handleAddAsteroidDestroy}
+                onRemoveClick={handleRemoveAsteroidDestroy}
+              />}
+            </Route>
+          </Switch>
+        </div>
+        
+        <Footer date={date}/>
+
+        {isLoader && <AsteroidDescriptionPopup data={selectAsteroid} isOpen={isOpen} onClose={closePopup}/>}
+      </div>
+    </BrowserRouter>
   );
 }
 

@@ -15,3 +15,20 @@
 .flex_column {
   flex-direction: column;
 }
+
+.content {
+  box-sizing: border-box;
+  margin: 24px 30px 0;
+}
+
+.title {
+  text-align: center;
+  font-size: 36px;
+}
+
+.order {
+  text-align: center;
+  font-size: 20px;
+  line-height: 32px;
+  font-weight: 500;
+}

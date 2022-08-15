@@ -1,17 +1,15 @@
 import React, {useState} from "react";
-import asteroids from './Asteroids.module.css';
+import orderAsteroids from './OrderList.module.css';
 import app from '../App/App.module.css';
 import dangerousImage from '../../images/potentially_hazardous_asteroid.png'
-import indangerousImage from '../../images/potentially_inhazardous_asteroid.png'
-import { useEffect } from "react";
+import inDangerousImage from '../../images/potentially_inhazardous_asteroid.png'
 
-function Asteroids({ data, orderList, isDistanceKilometers, onAddClick, onRemoveClick, onOpenPopup, isPageAsteroid}) {
+function OrderList({ data, orderList, isDistanceKilometers, onAddClick, onRemoveClick, onOpenPopup}) {
   const yearDataAsteroid = data.close_approach_data[0].close_approach_date.slice(0, 4);
   const monthDataAsteroid = data.close_approach_data[0].close_approach_date.slice(5, 7);
   const dayDataAsteroid = data.close_approach_data[0].close_approach_date.slice(8);
   const isPotentiallyHazardousAsteroid = data.is_potentially_hazardous_asteroid;
   const asteroidName = data.name.slice(data.name.indexOf('(') + 1, -1);
-  const [isAddOrder, setIsAddOrder] = useState(false);
 
   let monthNameDataAsteroid;
   switch(monthDataAsteroid) {
@@ -53,23 +51,8 @@ function Asteroids({ data, orderList, isDistanceKilometers, onAddClick, onRemove
       break;
   }
 
-  useEffect(() => {
-    orderList.map((item) => {
-      item.id === data.id 
-        ? setIsAddOrder(true)
-        : setIsAddOrder(false)
-    })
-  }, [isPageAsteroid])
-
   function handleClick() {
-    if(isAddOrder) {
       onRemoveClick(data);
-      setIsAddOrder(false);
-    }
-    else {
-      onAddClick(data);
-      setIsAddOrder(true);
-    }
   }
 
   function handleAsteroidClick() {
@@ -78,24 +61,24 @@ function Asteroids({ data, orderList, isDistanceKilometers, onAddClick, onRemove
 
 
   return(
-    <li className={`${app.flex} ${app.flex_column} ${asteroids.item}`}>
-        <h3 className={asteroids.date}>{dayDataAsteroid} {monthNameDataAsteroid} {yearDataAsteroid}</h3>
-        <button type="button" className={`${app.flex} ${asteroids.data}`} onClick={handleAsteroidClick}>
-          <img className={`${asteroids.image}`} src={isPotentiallyHazardousAsteroid ? dangerousImage : indangerousImage} alt={isPotentiallyHazardousAsteroid ? "Опасный астероид" : "Не опасный астероид"}/>
-          <div className={`${app.flex} ${app.flex_column} ${asteroids.description}`}>
-            <h4 className={`${asteroids.description} ${asteroids.title}`}>Астероид {asteroidName}</h4>
-            <span className={asteroids.diameter}>&#8709; {`${Math.floor(data.estimated_diameter.meters.estimated_diameter_max)} м`}</span>
-            <span className={asteroids.distance}>
+    <li className={`${app.flex} ${app.flex_column} ${orderAsteroids.item}`}>
+        <h3 className={orderAsteroids.date}>{dayDataAsteroid} {monthNameDataAsteroid} {yearDataAsteroid}</h3>
+        <button type="button" className={`${app.flex} ${orderAsteroids.data}`} onClick={handleAsteroidClick}>
+          <img className={`${orderAsteroids.image}`} src={isPotentiallyHazardousAsteroid ? dangerousImage : inDangerousImage} alt={isPotentiallyHazardousAsteroid ? "Опасный астероид" : "Не опасный астероид"}/>
+          <div className={`${app.flex} ${app.flex_column} ${orderAsteroids.description}`}>
+            <h4 className={`${orderAsteroids.description} ${orderAsteroids.title}`}>Астероид {asteroidName}</h4>
+            <span className={orderAsteroids.diameter}>&#8709; {`${Math.floor(data.estimated_diameter.meters.estimated_diameter_max)} м`}</span>
+            <span className={orderAsteroids.distance}>
               &#8596; {`${isDistanceKilometers 
                 ? Math.floor(data.close_approach_data[0].miss_distance.kilometers) + " км" 
                 : Math.floor(data.close_approach_data[0].miss_distance.lunar) + " лунных орбит"}`}
             </span>
-            <span className={asteroids.status}>{isPotentiallyHazardousAsteroid ? "Опасен" : "Не опасен"}</span>
+            <span className={orderAsteroids.status}>{isPotentiallyHazardousAsteroid ? "Опасен" : "Не опасен"}</span>
           </div>
         </button>
-        <button type="button" className={asteroids.button} onClick={handleClick}>{!isAddOrder ? "УНИЧТОЖИТЬ" : "НЕ УНИЧТОЖАТЬ"}</button>
+        <button type="button" className={orderAsteroids.button} onClick={handleClick}>НЕ УНИЧТОЖАТЬ</button>
     </li>
   )
 }
 
-export default Asteroids;
+export default OrderList;
