@@ -3,9 +3,8 @@ import asteroids from './Asteroids.module.css';
 import app from '../App/App.module.css';
 import dangerousImage from '../../images/potentially_hazardous_asteroid.png'
 import indangerousImage from '../../images/potentially_inhazardous_asteroid.png'
-import { useEffect } from "react";
 
-function Asteroids({ data, orderList, isDistanceKilometers, onAddClick, onRemoveClick, onOpenPopup, isPageAsteroid}) {
+function Asteroids({ data, orderList, isDistanceKilometers, onAddClick, onRemoveClick, onOpenPopup}) {
   const yearDataAsteroid = data.close_approach_data[0].close_approach_date.slice(0, 4);
   const monthDataAsteroid = data.close_approach_data[0].close_approach_date.slice(5, 7);
   const dayDataAsteroid = data.close_approach_data[0].close_approach_date.slice(8);
@@ -53,14 +52,6 @@ function Asteroids({ data, orderList, isDistanceKilometers, onAddClick, onRemove
       break;
   }
 
-  useEffect(() => {
-    orderList.map((item) => {
-      item.id === data.id 
-        ? setIsAddOrder(true)
-        : setIsAddOrder(false)
-    })
-  }, [isPageAsteroid])
-
   function handleClick() {
     if(isAddOrder) {
       onRemoveClick(data);
@@ -75,7 +66,6 @@ function Asteroids({ data, orderList, isDistanceKilometers, onAddClick, onRemove
   function handleAsteroidClick() {
     onOpenPopup(data);
   }
-
 
   return(
     <li className={`${app.flex} ${app.flex_column} ${asteroids.item}`}>
@@ -93,7 +83,7 @@ function Asteroids({ data, orderList, isDistanceKilometers, onAddClick, onRemove
             <span className={asteroids.status}>{isPotentiallyHazardousAsteroid ? "Опасен" : "Не опасен"}</span>
           </div>
         </button>
-        <button type="button" className={asteroids.button} onClick={handleClick}>{!isAddOrder ? "УНИЧТОЖИТЬ" : "НЕ УНИЧТОЖАТЬ"}</button>
+        <button type="button" className={asteroids.button} onClick={handleClick}>{!(orderList.map((item) => item.id).includes(data.id)) ? "УНИЧТОЖИТЬ" : "НЕ УНИЧТОЖАТЬ"}</button>
     </li>
   )
 }

@@ -24,7 +24,6 @@ function App() {
   const [isPotentiallyHazardous, setIsPotentiallyHazardous] = useState(false);
   const [order, setOrder] = useState([]);
   const [currentOrder, setCurrentOrder] = useState(order);
-  const [isPageAsteroid, setIsPageAsteroid] = useState(true)
 
   useEffect(() => {
     api.getApodImage()
@@ -92,7 +91,7 @@ function App() {
   }, [isPotentiallyHazardous, asteroids, order])
 
   function handleScroll(e) {
-    if((e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 100) && isPageAsteroid) {
+    if((e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 100)) {
       setFetching(true);
     }
     
@@ -135,20 +134,10 @@ function App() {
     })
   }
 
-  function handleClickAsteroidPage() {
-    setIsPageAsteroid(true);
-    console.log(`isPageAsteroid ${isPageAsteroid}`)
-  }
-
-  function handleClickOrderPage() {
-    setIsPageAsteroid(false);
-    console.log(`isPageAsteroid ${isPageAsteroid}`)
-  }
-
   return (
     <BrowserRouter>
       <div className={app.app}>
-        <Header image={headerImage} onClickAsteroidPage={handleClickAsteroidPage} onClickOrderPage={handleClickOrderPage} />
+        <Header image={headerImage} />
         <div className={app.content}>
           <Main
             distanceKilometers={handleDistanceKilometersClick}
@@ -164,7 +153,6 @@ function App() {
                 isDistanceKilometers={isDistanceKilometers}
                 onAddClick={handleAddAsteroidDestroy}
                 onRemoveClick={handleRemoveAsteroidDestroy}
-                isPageAsteroid={isPageAsteroid}
               />
             </Route>
             <Route path="/order">

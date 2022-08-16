@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Asteroids from '../Asteroids/Asteroids';
 import asteroidList from './AsteroidList.module.css';
 
-function AsteroidList({dataList, orderList, openPopup, isDistanceKilometers, onAddClick, onRemoveClick, isPageAsteroid}) {
+function AsteroidList({dataList, orderList, openPopup, isDistanceKilometers, onAddClick, onRemoveClick}) {
   const [arrAsteroid, setArrAsteroid] = useState(dataList);
 
   useEffect(() => {
@@ -32,7 +32,6 @@ function AsteroidList({dataList, orderList, openPopup, isDistanceKilometers, onA
               onAddClick={onAddClickHandler}
               onRemoveClick={onRemoveClickHandler}
               onOpenPopup={handleOpenPopup}
-              isPageAsteroid={isPageAsteroid}
             />)
           )}
         </ul>
