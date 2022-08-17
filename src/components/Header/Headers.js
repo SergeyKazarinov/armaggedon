@@ -1,24 +1,23 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import header from './Header.module.css';
-import app from '../../App.module.css'
-import headerImage from '../../images/headerBackground.jpg'
+import app from '../App/App.module.css';
 
-function Header() {
+function Header({image}) {
+
   return(
     <header className={header.header}>
-      <div className={app.flex}>
+      <div className={header.flex_container}>
         <div className={`${app.flex} ${app.flex_column}`}>
           <h1 className={header.title}>ARMAGGEDON V2</h1>
           <p className={header.subtitle}>Сервис заказа уничтожения астероидов, опасно подлетающих к Земле.</p>
         </div>
-        <nav className={app.flex}>
-          <ul className={`${app.flex} ${header.nav}`}>
-            <li className={header.item}>Астероиды</li>
-            <li className={header.item}>Заказ</li>
-          </ul>
+        <nav className={`${app.flex} ${header.nav}`}>
+          <NavLink exact to="/" activeClassName={header.active} className={header.button}>Астероиды</NavLink>
+          <NavLink to="/order" activeClassName={header.active} className={header.button}>Заказ</NavLink>
         </nav>
       </div>
-      <img className={header.image} src={headerImage} alr="Картинка дня" />
+      <img className={header.image} src={image} alr="Картинка дня" />
     </header>
   )
 }
