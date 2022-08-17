@@ -1,67 +1,48 @@
 import React, {useState, useEffect} from "react";
 import main from './Main.module.css';
 import app from '../App/App.module.css';
-import Asteroids from "../Asteroids/Asteroids";
 
-function Main({asteroids, isAsteroidPage, openPopup}) {
-  const [isDistanceKilometers, setIsDistanceKilometers] = useState(true);
-  const [isPotentiallyHazardous, setIsPotentiallyHazardous] = useState(false)
-  const [arrAsteroid, setArrAsteroid] = useState(asteroids);
-  const [asteroidDestroy, setAsteroidDestroy] = useState([]);
-  const [arrAsteroidDestroy, setArrAsteroidDestroy] = useState(asteroidDestroy)
+function Main({distanceKilometers, distanceLunar, onFilterClick}) {
+const [isKilometers, setIsKilometers] = useState(true);
+const [isChecked, setIsChecked] = useState(false);
 
-  useEffect(() => {
-    if(isPotentiallyHazardous) {
-      setArrAsteroid(asteroids.filter((item) => (item.is_potentially_hazardous_asteroid === true)))
-      setArrAsteroidDestroy(asteroidDestroy.filter((item) => (item.is_potentially_hazardous_asteroid === true)))
-    }
-    else {
-      setArrAsteroid(asteroids)
-      setArrAsteroidDestroy(asteroidDestroy)
-    }
-    
-  }, [isPotentiallyHazardous, asteroids, asteroidDestroy])
+
 
   function handleDistanceKilometersClick() {
-    setIsDistanceKilometers(true);
+    distanceKilometers(true);
+    setIsKilometers(true)
   }
 
   function handleDistanceLunarClick() {
-    setIsDistanceKilometers(false);
+    distanceLunar(false);
+    setIsKilometers(false);
   }
 
   function handleDangerousClick() {
-    setIsPotentiallyHazardous(!isPotentiallyHazardous);
-  }
+    if(!isChecked) {
+      setIsChecked(true);
+      onFilterClick(true);
+    }
+    else {
+      setIsChecked(false)
+      onFilterClick(false);
+    }
 
-  function handleAddAsteroidDestroy(asteroid) {
-    setAsteroidDestroy([asteroid, ...asteroidDestroy])
-  }
-
-  function handleRemoveAsteroidDestroy(asteroid) {
-    setAsteroidDestroy((asteroidDestroy) => {
-      return asteroidDestroy.filter(item => item !== asteroid);
-    })
-  }
-
-  function handleOpenPopup(data) {
-    openPopup(data);
   }
 
   return(
-    <div className={main.content}>
       <section className={main.flights}>
         <div className={`${app.flex} ${app.flex_column}`}>
-          <h2 className={main.title}>{isAsteroidPage ? "Ближайшие подлёты" : "Ваш заказ"}</h2>
+          <h2 className={main.title}>Ближайшие подлёты</h2>
           <div className={main.subtitle}>
             <div className={main.distance}>
               Отображать расстояние:&#8194;
               <span>
-                <button className={`${main.button} ${isDistanceKilometers && main.active}`} onClick={handleDistanceKilometersClick}>
+                <button className={`${main.button} ${isKilometers && main.active}`} onClick={handleDistanceKilometersClick}>
                 в километрах
                 </button> 
                 &#8194;|&#8194;
-                <button className={`${main.button} ${!isDistanceKilometers && main.active}`} onClick={handleDistanceLunarClick}>
+                <button className={`${main.button} ${!isKilometers && main.active}`} onClick={handleDistanceLunarClick}>
                   в лунных орбитах
                 </button>
               </span>
@@ -73,38 +54,6 @@ function Main({asteroids, isAsteroidPage, openPopup}) {
           </div>
         </div>
       </section>
-
-      <section className={main.asteroids}>
-        <ul className={main.list}>
-          {isAsteroidPage 
-          ? (arrAsteroid.map((item) => (
-              <Asteroids 
-              key={item.id}
-              data={item}
-              isDistanceKilometers={isDistanceKilometers}
-              onAddClick={handleAddAsteroidDestroy}
-              onRemoveClick={handleRemoveAsteroidDestroy}
-              onOpenPopup={handleOpenPopup}
-              />)
-              ))
-          : (arrAsteroidDestroy.map((item) => (
-              <Asteroids 
-              key={item.id}
-              data={item}
-              isDistanceKilometers={isDistanceKilometers}
-              onAddClick={handleAddAsteroidDestroy}
-              onRemoveClick={handleRemoveAsteroidDestroy}
-              onOpenPopup={handleOpenPopup}
-              />)
-            ))
-          }
-        </ul>
-        
-        {!isAsteroidPage && (
-          <button type="button" className={main.button_submit}>Отправить заказ</button>
-        )}
-      </section>
-    </div>
   )
 }
 
